@@ -5,8 +5,7 @@ import { useChatStore } from '../context/useChatStore.jsx';
 import MessageBubble from '../components/MessageBubble';
 import InputBox from '../components/InputBox';
 import Sidebar from '../components/Sidebar';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+import { API_BASE_URL } from '../services/api.js';
 
 const SUGGESTIONS = [
   'IIT Bombay fees and placements',
@@ -49,7 +48,7 @@ const ChatPage = () => {
     dispatch({ type: 'ADD_MESSAGE', payload: { role: 'assistant', text: '' } });
 
     try {
-      const response = await fetch(`${API_URL}/ask`, {
+      const response = await fetch(`${API_BASE_URL}/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: userText, history: history.slice(-5) }),
@@ -70,7 +69,7 @@ const ChatPage = () => {
     } catch (err) {
       dispatch({
         type: 'UPDATE_LAST_MESSAGE',
-        payload: `⚠️ **Error:** ${err.message}\n\nPlease ensure the backend is running on \`http://localhost:8000\`.`,
+        payload: `⚠️ **Connection Error:** ${err.message}\n\nPlease check that the backend server is running.`,
       });
     } finally {
       setIsStreaming(false);

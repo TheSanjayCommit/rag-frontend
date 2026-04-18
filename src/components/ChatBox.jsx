@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Message from './Message';
+import { API_BASE_URL } from '../services/api.js';
+
 
 const ChatBox = () => {
   const [query, setQuery] = useState('');
@@ -37,7 +39,7 @@ const ChatBox = () => {
         }
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1'}/ask`, {
+      const response = await fetch(`${API_BASE_URL}/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: currentQuery, history: history.slice(-5) }),
