@@ -4,9 +4,11 @@ import ChatPage from './pages/ChatPage';
 
 function App() {
   return (
-    <ChatProvider>
-      <ChatPage />
-    </ChatProvider>
+    <div className="dark min-h-screen bg-background text-foreground">
+      <ChatProvider>
+        <ChatPage />
+      </ChatProvider>
+    </div>
   );
 }
 
