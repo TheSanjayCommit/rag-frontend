@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
-import { Copy, Check, GraduationCap, User, Sparkles } from 'lucide-react';
+import { Copy, Check, GraduationCap, Sparkles } from 'lucide-react';
 
 const MessageBubble = ({ role, text, isStreaming }) => {
   const [copied, setCopied] = useState(false);
@@ -15,59 +15,69 @@ const MessageBubble = ({ role, text, isStreaming }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
       className={`flex w-full mb-8 ${isUser ? 'justify-end' : 'justify-start'}`}
     >
-      <div className={`flex w-[85%] md:max-w-[75%] gap-2 md:gap-4 ${isUser ? 'flex-row-reverse ml-auto' : 'flex-row'}`}>
-        {/* Avatar */}
-        <div className={`flex-shrink-0 w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center shadow-sm ${
-          isUser ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground border border-border'
-        }`}>
-          {isUser ? <User size={18} /> : <GraduationCap size={18} />}
-        </div>
+      <div className={`flex w-full gap-3 md:gap-4 ${isUser ? 'justify-end' : 'flex-row'}`}>
+        
+        {/* AI Avatar - Only show for AI */}
+        {!isUser && (
+          <div className="flex-shrink-0 w-7 h-7 md:w-8 md:h-8 mt-1 rounded-full border border-border/50 flex items-center justify-center bg-background shadow-sm text-foreground">
+            <GraduationCap size={16} />
+          </div>
+        )}
 
-        {/* Bubble Container */}
-        <div className="flex flex-col gap-2">
-          <div className={`relative px-4 py-3 md:px-5 md:py-4 rounded-2xl shadow-sm ${
-            isUser 
-              ? 'bg-primary text-primary-foreground rounded-tr-none' 
-              : 'bg-card border border-border rounded-tl-none'
-          }`}>
-            <div className={`prose prose-sm md:prose-base break-words overflow-hidden ${isUser ? 'text-primary-foreground' : 'text-foreground'}`}>
+        {/* Message Container */}
+        <div className={`flex flex-col ${isUser ? 'max-w-[85%] md:max-w-[70%]' : 'flex-1 min-w-0 max-w-full'}`}>
+          
+          <div className={`
+            relative text-[15px] md:text-base leading-relaxed break-words
+            ${isUser 
+              ? 'bg-[#2f2f2f] text-white px-5 py-3 rounded-[24px] shadow-sm' 
+              : 'text-foreground bg-transparent py-1'}
+          `}>
+            <div className={`prose prose-sm md:prose-base max-w-none break-words overflow-wrap-anywhere ${isUser ? 'text-white' : 'text-foreground dark:prose-invert'}`}>
               {isUser ? (
-                <p className="whitespace-pre-wrap font-medium">{text}</p>
+                <p className="whitespace-pre-wrap font-medium m-0">{text}</p>
               ) : text === '' && isStreaming ? (
                 <div className="flex items-center gap-1.5 py-1">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-bounce [animation-delay:-0.3s]" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-bounce [animation-delay:-0.15s]" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-bounce" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-foreground/40 animate-bounce [animation-delay:-0.3s]" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-foreground/40 animate-bounce [animation-delay:-0.15s]" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-foreground/40 animate-bounce" />
                 </div>
               ) : (
                 <ReactMarkdown
                   components={{
+                    a: ({node, ...props}) => <a {...props} className="text-blue-500 hover:underline break-all" target="_blank" rel="noopener noreferrer" />,
+                    p: ({node, ...props}) => <p {...props} className="mb-4 last:mb-0 break-words" />,
+                    ul: ({node, ...props}) => <ul {...props} className="list-disc ml-6 mb-4" />,
+                    ol: ({node, ...props}) => <ol {...props} className="list-decimal ml-6 mb-4" />,
+                    li: ({node, ...props}) => <li {...props} className="mb-1" />,
+                    strong: ({node, ...props}) => <strong {...props} className="font-semibold" />,
                     table: ({ node, ...props }) => (
                       <div className="overflow-x-auto my-4 rounded-xl border border-border">
                         <table className="min-w-full divide-y divide-border" {...props} />
                       </div>
                     ),
-                    thead: ({ node, ...props }) => <thead className="bg-muted/50" {...props} />,
-                    th: ({ node, ...props }) => <th className="px-4 py-2 text-left text-xs font-bold uppercase tracking-wider" {...props} />,
-                    td: ({ node, ...props }) => <td className="px-4 py-2 text-sm border-t border-border" {...props} />,
+                    thead: ({ node, ...props }) => <thead className="bg-muted/30" {...props} />,
+                    th: ({ node, ...props }) => <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider" {...props} />,
+                    td: ({ node, ...props }) => <td className="px-4 py-3 text-sm border-t border-border" {...props} />,
                   }}
                 >
                   {text}
                 </ReactMarkdown>
               )}
               {isStreaming && text !== '' && (
-                <span className="streaming-cursor" />
+                <span className="inline-block w-2 h-4 ml-1 bg-foreground animate-pulse align-middle" />
               )}
             </div>
 
             {/* AI Source Badge */}
             {!isUser && text && !isStreaming && (
-              <div className="flex items-center gap-1.5 mt-2 ml-1 text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest">
-                <Sparkles size={10} className="text-primary/60" />
+              <div className="flex items-center gap-1.5 mt-3 text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                <Sparkles size={12} className="text-blue-500" />
                 Verified Data
               </div>
             )}
@@ -75,13 +85,13 @@ const MessageBubble = ({ role, text, isStreaming }) => {
 
           {/* Action Buttons */}
           {!isUser && text && !isStreaming && (
-            <div className="flex items-center gap-2 mt-1">
+            <div className="flex items-center gap-2 mt-2">
               <button 
                 onClick={handleCopy}
                 className="p-1.5 rounded-md hover:bg-muted text-muted-foreground transition-colors"
                 title="Copy response"
               >
-                {copied ? <Check size={13} className="text-emerald-500" /> : <Copy size={13} />}
+                {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
               </button>
             </div>
           )}

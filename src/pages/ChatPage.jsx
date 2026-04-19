@@ -99,26 +99,26 @@ const ChatPage = () => {
         />
 
         {/* Scrollable Area */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth custom-scrollbar">
-          <div className="max-w-4xl mx-auto w-full px-4 md:px-8 pt-6">
+        <div className="flex-1 overflow-y-auto scroll-smooth custom-scrollbar pb-32">
+          <div className="max-w-3xl mx-auto w-full px-4 md:px-0 pt-6">
             {messages.length === 0 ? (
               // Welcome Screen
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex flex-col items-center justify-center min-h-[70vh] text-center"
+                className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4"
               >
-                <div className="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center text-primary mb-8 animate-pulse">
-                  <GraduationCap size={44} />
+                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6 shadow-sm">
+                  <GraduationCap size={32} />
                 </div>
-                <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4 bg-gradient-to-b from-foreground to-foreground/50 bg-clip-text text-transparent">
-                  How can I help your career?
+                <h1 className="text-3xl md:text-4xl font-semibold tracking-tight mb-3">
+                  How can I help you today?
                 </h1>
-                <p className="text-muted-foreground text-lg max-w-xl mb-12 font-medium">
-                  Your AI-powered advisor for college rankings, fees, and institution comparisons.
+                <p className="text-muted-foreground text-sm md:text-base max-w-lg mb-10">
+                  Your personalized advisor for college rankings, fee structures, and precise institution comparisons.
                 </p>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full max-w-2xl">
                   {SUGGESTIONS.map((s, idx) => (
                     <motion.button
                       key={s.text}
@@ -126,19 +126,19 @@ const ChatPage = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.1 }}
                       onClick={() => sendMessage(s.text)}
-                      className="flex items-center gap-3 p-4 rounded-2xl bg-card border border-border hover:border-primary/40 hover:bg-secondary/50 transition-all text-left group shadow-sm hover:shadow-md"
+                      className="flex items-center gap-3 p-3.5 rounded-xl border border-border bg-card/50 hover:bg-secondary/40 transition-colors text-left text-sm font-medium"
                     >
-                      <div className="p-2 rounded-lg bg-muted group-hover:bg-primary/10 transition-colors">
+                      <div className="text-muted-foreground">
                         {s.icon}
                       </div>
-                      <span className="text-sm font-semibold">{s.text}</span>
+                      <span>{s.text}</span>
                     </motion.button>
                   ))}
                 </div>
               </motion.div>
             ) : (
               // Message List
-              <div className="flex flex-col pb-12">
+              <div className="flex flex-col pb-8">
                 <AnimatePresence initial={false}>
                   {messages.map((msg, i) => (
                     <MessageBubble
@@ -156,13 +156,15 @@ const ChatPage = () => {
         </div>
 
         {/* Input Bar */}
-        <footer className="w-full">
-          <ChatInput
-            query={query}
-            setQuery={setQuery}
-            onSend={() => sendMessage()}
-            isStreaming={isStreaming}
-          />
+        <footer className="absolute bottom-0 w-full bg-gradient-to-t from-background via-background to-transparent pt-6 pb-2">
+          <div className="max-w-3xl mx-auto w-full px-4 md:px-0">
+            <ChatInput
+              query={query}
+              setQuery={setQuery}
+              onSend={() => sendMessage()}
+              isStreaming={isStreaming}
+            />
+          </div>
         </footer>
       </main>
     </div>
