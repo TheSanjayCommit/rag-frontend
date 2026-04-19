@@ -2,11 +2,16 @@
  * API Configuration — Single Source of Truth
  */
 
-// Use the Vercel environment variable, or fallback to local development
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// 1. Get the base URL from environment variables
+const RAW_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-// Clean up the URL: Remove trailing slashes and ensure it ends with /api/v1
-export const API_BASE_URL = `${BASE_URL.replace(/\/$/, '')}/api/v1`;
+// 2. CLEANUP: 
+// - Remove any trailing slashes
+// - Remove any accidental "/api/v1" that might be in the environment variable
+const CLEAN_BASE = RAW_URL.replace(/\/$/, '').replace(/\/api\/v1$/, '');
+
+// 3. FINAL ROUTE: Always ensure it ends with exactly one /api/v1
+export const API_BASE_URL = `${CLEAN_BASE}/api/v1`;
 
 /**
  * Sends a non-streaming query to the backend.
