@@ -19,7 +19,7 @@ const MessageBubble = ({ role, text, isStreaming }) => {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       className={`flex w-full mb-8 ${isUser ? 'justify-end' : 'justify-start'}`}
     >
-      <div className={`flex w-[96%] md:max-w-[75%] gap-2 md:gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
+      <div className={`flex w-[85%] md:max-w-[75%] gap-2 md:gap-4 ${isUser ? 'flex-row-reverse ml-auto' : 'flex-row'}`}>
         {/* Avatar */}
         <div className={`flex-shrink-0 w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center shadow-sm ${
           isUser ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground border border-border'
