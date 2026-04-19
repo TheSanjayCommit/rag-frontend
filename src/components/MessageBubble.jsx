@@ -19,9 +19,9 @@ const MessageBubble = ({ role, text, isStreaming }) => {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       className={`flex w-full mb-8 ${isUser ? 'justify-end' : 'justify-start'}`}
     >
-      <div className={`flex w-[92%] md:max-w-[75%] gap-3 md:gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
+      <div className={`flex w-[96%] md:max-w-[75%] gap-2 md:gap-4 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
         {/* Avatar */}
-        <div className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center shadow-sm ${
+        <div className={`flex-shrink-0 w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center shadow-sm ${
           isUser ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground border border-border'
         }`}>
           {isUser ? <User size={18} /> : <GraduationCap size={18} />}
@@ -29,12 +29,12 @@ const MessageBubble = ({ role, text, isStreaming }) => {
 
         {/* Bubble Container */}
         <div className="flex flex-col gap-2">
-          <div className={`relative px-5 py-4 rounded-2xl shadow-sm ${
+          <div className={`relative px-4 py-3 md:px-5 md:py-4 rounded-2xl shadow-sm ${
             isUser 
               ? 'bg-primary text-primary-foreground rounded-tr-none' 
               : 'bg-card border border-border rounded-tl-none'
           }`}>
-            <div className={`prose ${isUser ? 'text-primary-foreground' : 'text-foreground'}`}>
+            <div className={`prose prose-sm md:prose-base break-words overflow-hidden ${isUser ? 'text-primary-foreground' : 'text-foreground'}`}>
               {isUser ? (
                 <p className="whitespace-pre-wrap font-medium">{text}</p>
               ) : text === '' && isStreaming ? (
