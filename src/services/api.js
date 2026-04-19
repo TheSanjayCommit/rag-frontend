@@ -5,10 +5,10 @@
 // 1. Get the base URL from environment variables
 const RAW_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-// 2. CLEANUP: 
-// - Remove any trailing slashes
-// - Remove any accidental "/api/v1" that might be in the environment variable
-const CLEAN_BASE = RAW_URL.replace(/\/$/, '').replace(/\/api\/v1$/, '');
+// 2. ULTRA-CLEANUP: 
+// - Strip everything after the domain if it looks like an API path
+// - This ensures that even if Vercel has a bad URL, we find the root.
+const CLEAN_BASE = RAW_URL.replace(/\/api\/v1\/?$/i, '').replace(/\/+$/, '');
 
 // 3. FINAL ROUTE: Always ensure it ends with exactly one /api/v1
 export const API_BASE_URL = `${CLEAN_BASE}/api/v1`;
